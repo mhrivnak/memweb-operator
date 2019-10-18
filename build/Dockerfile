@@ -11,9 +11,7 @@ ENV OPERATOR=/usr/local/bin/memweb-reconciler \
     USER_NAME=memweb-reconciler
 
 # install operator binary
-COPY --from-builder /go/src/github.com/mhrivnak/memweb-reconciler/memweb ${OPERATOR}
-
-RUN  /usr/local/bin/user_setup
+COPY --from=builder /go/src/github.com/mhrivnak/memweb-reconciler/memweb ${OPERATOR}
 
 ENTRYPOINT ["/usr/local/bin/memweb-reconciler"]
 
