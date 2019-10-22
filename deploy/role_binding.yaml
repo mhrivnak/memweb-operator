@@ -1,0 +1,11 @@
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: memweb-reconciler
+subjects:
+- kind: ServiceAccount
+  name: memweb-reconciler
+roleRef:
+  kind: Role
+  name: memweb-reconciler
+  apiGroup: rbac.authorization.k8s.io

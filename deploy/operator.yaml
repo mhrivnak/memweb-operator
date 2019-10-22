@@ -11,15 +11,16 @@ spec:
     metadata:
       labels:
         name: memweb-reconciler
+        app: memweb-reconciler
     spec:
-      serviceAccountName: memweb-reconciler
+     #serviceAccountName: memweb-reconciler
       containers:
         - name: memweb-reconciler
           # Replace this with the built image name
-          image: REPLACE_IMAGE
-          command:
-          - memweb-reconciler
+          image: docker.io/mhrivnak/memweb-reconciler
           imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
           env:
             - name: WATCH_NAMESPACE
               valueFrom:
@@ -31,3 +32,16 @@ spec:
                   fieldPath: metadata.name
             - name: OPERATOR_NAME
               value: "memweb-reconciler"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: memweb-reconciler
+spec:
+  selector:
+    app: memweb-reconciler
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080

@@ -12,8 +12,8 @@ import (
 	"github.com/operator-framework/operator-sdk/pkg/log/zap"
 	"k8s.io/apimachinery/pkg/runtime"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
+	"k8s.io/client-go/rest"
 	crclient "sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	logf "sigs.k8s.io/controller-runtime/pkg/runtime/log"
 )
 
@@ -22,14 +22,12 @@ var log = logf.Log.WithName("cmd")
 func main() {
 	logf.SetLogger(zap.Logger())
 
-	config, err := config.GetConfig()
-	if err != nil {
-		log.Error(err, "")
-		os.Exit(1)
+	config := &rest.Config{
+		Host: "central-operator-proxy:8888",
 	}
 
 	scheme := runtime.NewScheme()
-	err = apis.AddToScheme(scheme)
+	err := apis.AddToScheme(scheme)
 	if err != nil {
 		log.Error(err, "")
 		os.Exit(1)
